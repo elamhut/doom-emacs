@@ -1,10 +1,15 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-(setq shell-file-name (executable-find "bash"))
-
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+;; Open fullscreen without Daemon
+(add-hook 'window-setup-hook 'toggle-frame-maximized t) 
+;; Open fullscreen with Daemon
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (with-selected-frame frame
+              (set-frame-parameter frame 'fullscreen 'maximized))))
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
@@ -45,24 +50,39 @@
 (setq display-line-numbers-type t)
 
 ;; Set Ident Tab
+(electric-indent-mode -1)
 (setq-default indent-tabs-mode t)
 (setq c-default-style
       '((c-mode . "k&r")))
 
 ;; Tree-Sitter Config
-(doom! :lang
-       (cc +tree-sitter))
+(add-hook 'c-ts-mode-hook
+          (lambda ()
+            (setq treesit-indent-mode nil)))
+
+;; This is a workaround to fix '=' formatting while in c-ts-mode
+(defun my-c-format (beg end)
+  (interactive "r")
+  (let ((orig-mode major-mode))
+    (unwind-protect
+        (progn
+          (c-mode)
+          (evil-indent beg end))
+      (funcall orig-mode))))
 
 ;; LSP Config
 (after! lsp-clangd
   (setq lsp-clients-clangd-args
-        '("-j=3"
-          "--background-index"
-          "--clang-tidy"
-          "--completion-style=detailed"
-          "--header-insertion=never"
-          "--header-insertion-decorators=0"))
+	'("-j=3"
+	  "--background-index"
+	  "--clang-tidy"
+	  "--completion-style=detailed"
+	  "--header-insertion=never"
+	  "--header-insertion-decorators=0"))
   (set-lsp-priority! 'clangd 2))
+
+(setq eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider))
+(setq lsp-enable-on-type-formatting nil)
 
 (after! cc-mode
   (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy")))
@@ -72,20 +92,20 @@
 (setq org-directory "~/org/")
 
 ;; Open a find file in a new window with VIM Hotkey
-(defun cust/vsplit-file-open (f)
-  (let ((evil-vsplit-window-right t))
-    (+evil/window-vsplit-and-follow)
-    (find-file f)))
+ (defun cust/vsplit-file-open (f)
+   (let ((evil-vsplit-window-right t))
+     (+evil/window-vsplit-and-follow)
+     (find-file f)))
 
-(defun cust/split-file-open (f)
-  (let ((evil-split-window-below t))
-    (+evil/window-split-and-follow)
-    (find-file f)))
+ (defun cust/split-file-open (f)
+   (let ((evil-split-window-below t))
+     (+evil/window-split-and-follow)
+     (find-file f)))
 
-(map! :after embark
-      :map embark-file-map
-      "V" #'cust/vsplit-file-open
-      "X" #'cust/split-file-open)
+ (map! :after embark
+       :map embark-file-map
+       "V" #'cust/vsplit-file-open
+       "X" #'cust/split-file-open)
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
