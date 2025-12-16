@@ -43,10 +43,10 @@
 (setq doom-symbol-font (font-spec :family "Symbols Nerd Font"))
 
 
-(load-theme 'kanagawa-wave t)
 ;; This changes the base color for numbers, if Theme has set then it's overwritten
 (set-face-attribute 'font-lock-number-face nil :foreground "#D27E99")
 
+(load-theme 'kanagawa-wave t)
 ;;(load-theme 'doom-one)
 ;;(load-theme 'doom-city-lights)
 ;;(load-theme 'doom-monokai-pro)
@@ -59,6 +59,7 @@
 ;; Set Identation Options
 (electric-indent-mode -1)
 (setq-default indent-tabs-mode t)
+(setq-default c-ts-mode-indent-offset 4)
 
 ;; Set Identation Styles for Major Modes 
 (setq c-default-style '((c-mode . "k&r")))
@@ -95,17 +96,17 @@
 	(bracket delimiter error operator property)))
 
 ;; This is a workaround to fix '=' formatting while in c-ts-mode
-(defun my-c-format (beg end)
-  (interactive "r")
-  (let ((orig-mode major-mode))
-    (unwind-protect
-        (progn
-          (c-mode)
-          (evil-indent beg end))
-      (funcall orig-mode))))
-; Bind this function to '=' just in c-ts-mode
-(evil-define-key 'visual c-ts-mode-map
-  (kbd "=") #'my-c-format)
+;; (defun my-c-format (beg end)
+;;   (interactive "r")
+;;   (let ((orig-mode major-mode))
+;;     (unwind-protect
+;;         (progn
+;;           (c-mode)
+;;           (evil-indent beg end))
+;;       (funcall orig-mode))))
+;; ; Bind this function to '=' just in c-ts-mode
+;; (evil-define-key 'visual c-ts-mode-map
+;;   (kbd "=") #'my-c-format)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
