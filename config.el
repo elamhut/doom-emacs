@@ -42,7 +42,11 @@
 (setq doom-font (font-spec :family "CaskaydiaCove NFM" :size 24))
 (setq doom-symbol-font (font-spec :family "Symbols Nerd Font"))
 
+
 (load-theme 'kanagawa-wave t)
+;; This changes the base color for numbers, if Theme has set then it's overwritten
+(set-face-attribute 'font-lock-number-face nil :foreground "#D27E99")
+
 ;;(load-theme 'doom-one)
 ;;(load-theme 'doom-city-lights)
 ;;(load-theme 'doom-monokai-pro)
@@ -66,22 +70,29 @@
             (setq treesit-indent-mode nil)))
 
 
-;; treesit-font-lock-level
-;; Value
+;; This controls how much color you want
 (setq treesit-font-lock-level 3)
 
+;; Configuring TreeSitter for Syntax Highlighting of Numbers
+(add-hook 'c-ts-mode-hook
+	  (lambda ()
+	    (setq-local treesit-font-lock-settings
+			(append
+			 treesit-font-lock-settings
+			 (treesit-font-lock-rules
+			  :language 'c
+			  :feature 'number
+			  '((number_literal)
+			    @font-lock-number-face))))
+	    (font-lock-flush)))
+
+;; This controls the colors for a symbol on each level. Each parenthesis is a level
+;; we added the 'number' option in the function above
 (setq c-ts-mode--feature-list
       '((comment definition)
-      (keyword preprocessor string type)
-      (assignment constant function escape-sequence label literal variable number)
-      (bracket delimiter error operator property)))
-
-;; (defvar c-ts-mode--feature-list
-;;   '(( comment definition)
-;;     ( keyword preprocessor string type)
-;;     ( assignment constant escape-sequence label literal)
-;;     ( bracket delimiter error function operator property variable))
-;;   "`treesit-font-lock-feature-list' for `c-ts-mode'.")
+	(keyword preprocessor string type)
+	(assignment constant function escape-sequence label literal variable number)
+	(bracket delimiter error operator property)))
 
 ;; This is a workaround to fix '=' formatting while in c-ts-mode
 (defun my-c-format (beg end)
