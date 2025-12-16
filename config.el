@@ -43,7 +43,10 @@
 (setq doom-symbol-font (font-spec :family "Symbols Nerd Font"))
 
 (load-theme 'kanagawa-wave t)
-;;(setq doom-theme 'kanagawa-wave)
+;;(load-theme 'doom-one)
+;;(load-theme 'doom-city-lights)
+;;(load-theme 'doom-monokai-pro)
+;;(load-theme 'doom-tokyo-night)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -60,6 +63,12 @@
           (lambda ()
             (setq treesit-indent-mode nil)))
 
+
+(require 'ansi-color)
+(add-hook 'c-ts-mode-hook
+          (lambda ()
+            (ansi-color-apply-on-region (point-min) (point-max))))
+
 ;; This is a workaround to fix '=' formatting while in c-ts-mode
 (defun my-c-format (beg end)
   (interactive "r")
@@ -69,6 +78,9 @@
           (c-mode)
           (evil-indent beg end))
       (funcall orig-mode))))
+; Bind this function to '=' just in c-ts-mode
+(evil-define-key 'visual c-ts-mode-map
+  (kbd "=") #'my-c-format)
 
 ;; LSP Config
 (after! lsp-clangd
