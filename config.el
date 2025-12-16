@@ -52,11 +52,13 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-;; Set Ident Tab
+;; Set Identation Options
 (electric-indent-mode -1)
 (setq-default indent-tabs-mode t)
-(setq c-default-style
-      '((c-mode . "k&r")))
+
+;; Set Identation Styles for Major Modes 
+(setq c-default-style '((c-mode . "k&r")))
+(setq c-ts-mode-indent-style 'k&r)
 
 ;; Tree-Sitter Config
 (add-hook 'c-ts-mode-hook
@@ -64,10 +66,22 @@
             (setq treesit-indent-mode nil)))
 
 
-(require 'ansi-color)
-(add-hook 'c-ts-mode-hook
-          (lambda ()
-            (ansi-color-apply-on-region (point-min) (point-max))))
+;; treesit-font-lock-level
+;; Value
+(setq treesit-font-lock-level 3)
+
+(setq c-ts-mode--feature-list
+      '((comment definition)
+      (keyword preprocessor string type)
+      (assignment constant function escape-sequence label literal variable number)
+      (bracket delimiter error operator property)))
+
+;; (defvar c-ts-mode--feature-list
+;;   '(( comment definition)
+;;     ( keyword preprocessor string type)
+;;     ( assignment constant escape-sequence label literal)
+;;     ( bracket delimiter error function operator property variable))
+;;   "`treesit-font-lock-feature-list' for `c-ts-mode'.")
 
 ;; This is a workaround to fix '=' formatting while in c-ts-mode
 (defun my-c-format (beg end)
@@ -82,26 +96,12 @@
 (evil-define-key 'visual c-ts-mode-map
   (kbd "=") #'my-c-format)
 
-;; LSP Config
-(after! lsp-clangd
-  (setq lsp-clients-clangd-args
-	'("-j=3"
-	  "--background-index"
-	  "--clang-tidy"
-	  "--completion-style=detailed"
-	  "--header-insertion=never"
-	  "--header-insertion-decorators=0"))
-  (set-lsp-priority! 'clangd 2))
-
-(setq eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider))
-(setq lsp-enable-on-type-formatting nil)
-
-(after! cc-mode
-  (set-eglot-client! 'cc-mode '("clangd" "-j=3" "--clang-tidy")))
-
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+
+;; Disable the DOOM default S key behavior in Normal mode (snipe)
+(remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 
 ;; Open a find file in a new window with VIM Hotkey
  (defun cust/vsplit-file-open (f)
