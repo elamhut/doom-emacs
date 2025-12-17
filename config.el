@@ -34,6 +34,25 @@
 (setq c-default-style '((c-mode . "k&r")))
 (setq c-ts-mode-indent-style 'bsd)
 
+;; Detect build.bat in room and auto-build
+(after! projectile
+  (defun my/project-build ()
+    "Run build.bat if it exists in the project root, otherwise repeat last Projectile command with prompt."
+    (interactive)
+    (if-let* ((root (projectile-project-root))
+	      (build (expand-file-name "build.bat" root))
+	      ((file-exists-p build)))
+	;; Run build.bat from project root
+	(let ((default-directory root))
+	  (compile "build.bat"))
+      ;; Fallback
+      (projectile-repeat-last-command 'show-prompt))))
+
+;; Keybinds
+(map! :n "j" #'evil-next-visual-line
+      :n "k" #'evil-previous-visual-line
+      :leader :desc "Project build (auto-detect)" "b" #'my/project-build)
+
 ;; Tree-Sitter Config
 (add-hook 'c-ts-mode-hook
           (lambda ()
@@ -41,6 +60,7 @@
 
 ;; This controls how much Tree Sitter Syntex Highlight color you want
 (setq treesit-font-lock-level 3)
+
 
 ;; Configuring TreeSitter for Syntax Highlighting of Numbers
 (add-hook 'c-ts-mode-hook
@@ -80,6 +100,11 @@
    (let ((evil-split-window-below t))
      (+evil/window-split-and-follow)
      (find-file f)))
+
+
+
+
+
 
  (map! :after embark
        :map embark-file-map
