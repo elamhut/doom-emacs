@@ -11,4 +11,5 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(evil-goggles-default-face ((t (:background "orange red"))))
+ '(highlight ((t (:background "#957FB8" :foreground "ghost white" :weight bold))))
  '(region ((t nil))))
