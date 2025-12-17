@@ -11,46 +11,15 @@
             (with-selected-frame frame
               (set-frame-parameter frame 'fullscreen 'maximized))))
 
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
-;; (setq user-full-name "John Doe"
-;;       user-mail-address "john@doe.com")
-
-;; Doom exposes five (optional) variables for controlling fonts in Doom:
-;;
-;; - `doom-font' -- the primary font to use
-;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;; - `doom-symbol-font' -- for symbols
-;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-;;
-;; See 'C-h v doom-font' for documentation and more examples of what they
-;; accept. For example:
-;;
-;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
-;;
-;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
-;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
-;; refresh your font settings. If Emacs still can't find your font, it likely
-;; wasn't installed correctly. Font issues are rarely Doom issues!
-
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
+;; Font Settings
 (setq doom-font (font-spec :family "CaskaydiaCove NFM" :size 24))
 (setq doom-symbol-font (font-spec :family "Symbols Nerd Font"))
-
 
 ;; This changes the base color for numbers, if Theme has set then it's overwritten
 (set-face-attribute 'font-lock-number-face nil :foreground "#D27E99")
 
+;; SPC h t - Choose a new theme inside emacs directly
 (load-theme 'kanagawa-wave t)
-;;(load-theme 'doom-one)
-;;(load-theme 'doom-city-lights)
-;;(load-theme 'doom-monokai-pro)
-;;(load-theme 'doom-tokyo-night)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -70,8 +39,7 @@
           (lambda ()
             (setq treesit-indent-mode nil)))
 
-
-;; This controls how much color you want
+;; This controls how much Tree Sitter Syntex Highlight color you want
 (setq treesit-font-lock-level 3)
 
 ;; Configuring TreeSitter for Syntax Highlighting of Numbers
@@ -95,19 +63,6 @@
 	(assignment constant function escape-sequence label literal variable number)
 	(bracket delimiter error operator property)))
 
-;; This is a workaround to fix '=' formatting while in c-ts-mode
-;; (defun my-c-format (beg end)
-;;   (interactive "r")
-;;   (let ((orig-mode major-mode))
-;;     (unwind-protect
-;;         (progn
-;;           (c-mode)
-;;           (evil-indent beg end))
-;;       (funcall orig-mode))))
-;; ; Bind this function to '=' just in c-ts-mode
-;; (evil-define-key 'visual c-ts-mode-map
-;;   (kbd "=") #'my-c-format)
-
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -130,6 +85,13 @@
        :map embark-file-map
        "V" #'cust/vsplit-file-open
        "X" #'cust/split-file-open)
+
+;; Hack to fix Dired with Icons
+(after! dired
+  (require 'dired-x))
+
+;; Remove the annyong "Do you REALLY want to quit" message
+(setq confirm-kill-emacs nil)
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
