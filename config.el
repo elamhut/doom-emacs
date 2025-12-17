@@ -34,25 +34,6 @@
 (setq c-default-style '((c-mode . "k&r")))
 (setq c-ts-mode-indent-style 'bsd)
 
-;; Detect build.bat in room and auto-build
-(after! projectile
-  (defun my/project-build ()
-    "Run build.bat if it exists in the project root, otherwise repeat last Projectile command with prompt."
-    (interactive)
-    (if-let* ((root (projectile-project-root))
-	      (build (expand-file-name "build.bat" root))
-	      ((file-exists-p build)))
-	;; Run build.bat from project root
-	(let ((default-directory root))
-	  (compile "build.bat"))
-      ;; Fallback
-      (projectile-repeat-last-command 'show-prompt))))
-
-;; Keybinds
-(map! :n "j" #'evil-next-visual-line
-      :n "k" #'evil-previous-visual-line
-      :leader :desc "Project build (auto-detect)" "b" #'my/project-build)
-
 ;; Tree-Sitter Config
 (add-hook 'c-ts-mode-hook
           (lambda ()
@@ -87,29 +68,32 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
+;; Set Compilation Buffer to open with a specific size in lines
+(set-popup-rule! "^\\*compilation\\*"
+  :side 'bottom
+  :size 10)
+
+;; Detect build.bat in room and auto-build
+(after! projectile
+  (defun my/project-build ()
+    "Run build.bat if it exists in the project root, otherwise repeat last Projectile command with prompt."
+    (interactive)
+    (if-let* ((root (projectile-project-root))
+	      (build (expand-file-name "build.bat" root))
+	      ((file-exists-p build)))
+	;; Run build.bat from project root
+	(let ((default-directory root))
+	  (compile "build.bat"))
+      ;; Fallback
+      (projectile-repeat-last-command 'show-prompt))))
+
+;; Keybinds
+(map! :n "j" #'evil-next-visual-line
+      :n "k" #'evil-previous-visual-line
+      :leader :desc "Project build (auto-detect)" "b" #'my/project-build)
+
 ;; Disable the DOOM default S key behavior in Normal mode (snipe)
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
-
-;; Open a find file in a new window with VIM Hotkey
- (defun cust/vsplit-file-open (f)
-   (let ((evil-vsplit-window-right t))
-     (+evil/window-vsplit-and-follow)
-     (find-file f)))
-
- (defun cust/split-file-open (f)
-   (let ((evil-split-window-below t))
-     (+evil/window-split-and-follow)
-     (find-file f)))
-
-
-
-
-
-
- (map! :after embark
-       :map embark-file-map
-       "V" #'cust/vsplit-file-open
-       "X" #'cust/split-file-open)
 
 ;; Hack to fix Dired with Icons
 (after! dired
