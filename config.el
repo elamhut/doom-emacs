@@ -63,7 +63,7 @@
 
 ;; Set Identation Styles for Major Modes 
 (setq c-default-style '((c-mode . "k&r")))
-(setq c-ts-mode-indent-style 'k&r)
+(setq c-ts-mode-indent-style 'bsd)
 
 ;; Tree-Sitter Config
 (add-hook 'c-ts-mode-hook
