@@ -87,10 +87,38 @@
       ;; Fallback
       (projectile-repeat-last-command 'show-prompt))))
 
+;; Activating Drag-Stuff
+(after! drag-stuff
+  (drag-stuff-global-mode 1))
+
 ;; Keybinds
-(map! :n "j" #'evil-next-visual-line
-      :n "k" #'evil-previous-visual-line
-      :leader :desc "Project build (auto-detect)" "b" #'my/project-build)
+(map! :n "j"   #'evil-next-visual-line
+      :n "k"   #'evil-previous-visual-line
+      :v "j"   #'evil-next-visual-line
+      :v "k"   #'evil-previous-visual-line
+
+      :n "C-j" #'evil-scroll-down
+      :n "C-k" #'evil-scroll-up
+      :v "C-j" #'evil-scroll-down
+      :v "C-k" #'evil-scroll-up
+      
+      :n "M-n" #'evil-scroll-line-down
+      :n "M-p" #'evil-scroll-line-up
+      :v "M-n" #'evil-scroll-line-down
+      :v "M-p" #'evil-scroll-line-up
+
+      :n "C-e" #'move-end-of-line
+      :n "C-y" #'yank
+      :v "C-e" #'move-end-of-line
+      :v "C-y" #'yank
+
+      :leader :desc "project build (auto-detect)" "b" #'my/project-build)
+
+(after! drag-stuff
+  (map! :n "M-j" #'drag-stuff-down
+        :n "M-k" #'drag-stuff-up
+        :v "M-j" #'drag-stuff-down
+        :v "M-k" #'drag-stuff-up))
 
 ;; Disable the DOOM default S key behavior in Normal mode (snipe)
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
