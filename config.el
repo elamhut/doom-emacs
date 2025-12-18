@@ -194,6 +194,11 @@
 
       :i "C-v" #'yank
 
+      :n "C-b s" #'bookmark-set
+      :n "C-b d" #'bookmark-delete
+      :n "C-b r" #'bookmark-rename
+      :n "C-b l" #'bookmark-bmenu-list
+
       ;;;Leader Keymaps;;;
       :leader :desc "Jump to Written Text" "SPC" #'avy-goto-char-timer
 
