@@ -95,18 +95,6 @@
       (projectile-repeat-last-command 'show-prompt))))
 
 ;; Ctrl V will open Search Result in Other Window
-;; (defun vertico-exit-to-other-window ()
-;;   "Exit the minibuffer and open the selected candidate in another window."
-;;   (interactive)
-;;   (let ((candidate (vertico--candidate)))
-;;     (embark-select) ;; Selects the item
-;;     (vertico-exit)   ;; Closes the minibuffer
-;;     (find-file-other-window candidate)))
-
-;; (map! :map vertico-map
-;;       "C-v" #'vertico-exit-to-other-window)
-
-
 ;; 1. The Action: logic to parse the string and open the file
 (defun +vertico/open-candidate-other-window (candidate)
   "Parses 'file:line:content' and opens it in another window."
@@ -168,21 +156,6 @@
          (default-directory project))
     (projectile-find-file)))
 
-;; Activating Drag-Stuff
-(use-package! drag-stuff
-  :hook (after-init . drag-stuff-global-mode)
-  :config
-  (map! :map evil-normal-state-map
-        "M-j" #'drag-stuff-down
-        "M-k" #'drag-stuff-up
-        "M-h" #'drag-stuff-left
-        "M-l" #'drag-stuff-right
-        :map evil-visual-state-map
-        "M-j" #'drag-stuff-down
-        "M-k" #'drag-stuff-up
-        "M-j" #'drag-stuff-left
-        "M-j" #'drag-stuff-right))
-
 ;; Disable the DOOM default S key behavior in Normal mode (snipe)
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 (after! evil-snipe
@@ -195,7 +168,7 @@
       :v "j"   #'evil-next-visual-line
       :v "k"   #'evil-previous-visual-line
 
-      :n "C-j" #'evil-scroll-down
+      :n "C-j" #'evil-scroll
       :n "C-k" #'evil-scroll-up
       :v "C-j" #'evil-scroll-down
       :v "C-k" #'evil-scroll-up
@@ -220,6 +193,9 @@
       :i "C-z" #'evil-undo
 
       :i "C-v" #'yank
+
+      ;;;Leader Keymaps;;;
+      :leader :desc "Jump to Written Text" "SPC" #'avy-goto-char-timer
 
       ;; Projectile keymaps
       :leader :desc "Configure Project" "p *" #'projectile-configure-project
