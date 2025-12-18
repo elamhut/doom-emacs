@@ -94,6 +94,56 @@
       ;; Fallback
       (projectile-repeat-last-command 'show-prompt))))
 
+;; Ctrl V will open Search Result in Other Window
+;; (defun vertico-exit-to-other-window ()
+;;   "Exit the minibuffer and open the selected candidate in another window."
+;;   (interactive)
+;;   (let ((candidate (vertico--candidate)))
+;;     (embark-select) ;; Selects the item
+;;     (vertico-exit)   ;; Closes the minibuffer
+;;     (find-file-other-window candidate)))
+
+;; (map! :map vertico-map
+;;       "C-v" #'vertico-exit-to-other-window)
+
+
+;; 1. The Action: logic to parse the string and open the file
+(defun +vertico/open-candidate-other-window (candidate)
+  "Parses 'file:line:content' and opens it in another window."
+  (interactive "sCandidate: ")
+  (let* ((clean-cand (substring-no-properties candidate))
+         (file clean-cand)
+         (line nil))
+    
+    ;; A. Parse "File:Line:" pattern
+    (when (string-match "^\\([^:]+\\):\\([0-9]+\\):" clean-cand)
+      (setq file (match-string 1 clean-cand))
+      (setq line (string-to-number (match-string 2 clean-cand))))
+
+    ;; B. Open the file (relative to current search context)
+    ;; We use expand-file-name to ensure we don't lose the path
+    (find-file-other-window (expand-file-name file))
+
+    ;; C. Jump to line
+    (when line
+      (goto-char (point-min))
+      (forward-line (1- line))
+      (recenter)
+      (pulse-momentary-highlight-one-line (point)))))
+
+;; 2. The Trigger: A specific command to bind to C-v
+(defun +vertico/trigger-open-other-window ()
+  "Trigger embark to act on the current candidate with our custom function."
+  (interactive)
+  (let ((embark-prompter (lambda (&rest _) #'+vertico/open-candidate-other-window)))
+    (embark-act)))
+
+;; 3. The Bind: clear and explicit
+(map! :after vertico
+      :map vertico-map
+      "C-v" #'+vertico/trigger-open-other-window)
+
+
 ;; Grep functions and names in another Project
 (defun doom/grep-in-other-project ()
   "Ripgrep in another Projectile project."
@@ -134,6 +184,7 @@
         "M-j" #'drag-stuff-right))
 
 ;; Disable the DOOM default S key behavior in Normal mode (snipe)
+(remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 (after! evil-snipe
   (evil-snipe-mode -1)
   (evil-snipe-override-mode -1))
@@ -158,6 +209,17 @@
       :n "C-y" #'yank
       :v "C-e" #'move-end-of-line
       :v "C-y" #'yank
+
+      :n "C-p" #'previous-error
+      :n "C-n" #'next-error
+      :v "C-p" #'previous-error
+      :v "C-n" #'next-error
+
+      :n "C-z" #'evil-undo
+      :v "C-z" #'evil-undo
+      :i "C-z" #'evil-undo
+
+      :i "C-v" #'yank
 
       ;; Projectile keymaps
       :leader :desc "Configure Project" "p *" #'projectile-configure-project
