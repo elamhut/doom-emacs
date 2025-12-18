@@ -34,6 +34,9 @@
 (setq c-default-style '((c-mode . "k&r")))
 (setq c-ts-mode-indent-style 'bsd)
 
+;; Remove the annyong "Do you REALLY want to quit" message
+(setq confirm-kill-emacs nil)
+
 ;; Tree-Sitter Config
 (add-hook 'c-ts-mode-hook
           (lambda ()
@@ -73,6 +76,10 @@
   :side 'bottom
   :size 10)
 
+;; Hack to fix Dired with Icons
+(after! dired
+  (require 'dired-x))
+
 ;; Detect build.bat in room and auto-build
 (after! projectile
   (defun my/project-build ()
@@ -87,9 +94,45 @@
       ;; Fallback
       (projectile-repeat-last-command 'show-prompt))))
 
+;; Grep functions and names in another Project
+(defun doom/grep-in-other-project ()
+  "Ripgrep in another Projectile project."
+  (interactive)
+  (require 'consult)
+  (require 'projectile)
+  (let* ((projects (projectile-relevant-known-projects))
+         (project (projectile-completing-read
+                   "Grep in project: "
+                   projects)))
+    (consult-ripgrep project)))
+
+;; Fuzzy Find files in another Project
+(defun doom/projectile-find-file-in-other-project ()
+  "Use Projectile to find a file in another known project."
+  (interactive)
+  (require 'projectile)
+  (let* ((projects (projectile-relevant-known-projects))
+         (project (projectile-completing-read
+                   "Find file in project: "
+                   projects))
+         (default-directory project))
+    (projectile-find-file)))
+
 ;; Activating Drag-Stuff
-(after! drag-stuff
-  (drag-stuff-global-mode 1))
+(use-package! drag-stuff
+  :hook (after-init . drag-stuff-global-mode)
+  :config
+  (map! :map evil-normal-state-map
+        "M-j" #'drag-stuff-down
+        "M-k" #'drag-stuff-up
+        :map evil-visual-state-map
+        "M-j" #'drag-stuff-down
+        "M-k" #'drag-stuff-up))
+
+;; Disable the DOOM default S key behavior in Normal mode (snipe)
+(after! evil-snipe
+  (evil-snipe-mode -1)
+  (evil-snipe-override-mode -1))
 
 ;; Keybinds
 (map! :n "j"   #'evil-next-visual-line
@@ -112,52 +155,23 @@
       :v "C-e" #'move-end-of-line
       :v "C-y" #'yank
 
+      ;; Projectile keymaps
+      :leader :desc "Configure Project" "p *" #'projectile-configure-project
+      :leader :desc "Grep in other project" "p g" #'doom/grep-in-other-project
+      :leader :desc "Grep in other project" "p g" #'doom/grep-in-other-project
+      :leader :desc "Find file in other project" "p SPC" #'doom/projectile-find-file-in-other-project
+      :leader :desc "Find file in other project" "p F" #'doom/projectile-find-file-in-other-project
+
+      ;; Magit Keymaps
+      :leader "g p" #'magit-pull
+      :leader "g P" #'magit-push
+      :leader :desc "Magit Merge Plain" "g m m" #'magit-merge-plain
+      :leader :desc "Magit Merge with Comment" "g m c" #'magit-merge-editmsg
+      :leader :desc "Magit Merge Previw" "g m p" #'magit-merge-preview
+      :leader :desc "Magit Merge Abort" "g m a" #'magit-merge-abort
+      :leader :desc "Magit add untracked" "g a" #'magit-stage-untracked
+      :leader :desc "Magit stage this file" "g s" #'magit-file-stage
+      :leader :desc "Magit stage all modified" "g S" #'magit-stage-modified
+
+      ;; Custom Keymaps
       :leader :desc "project build (auto-detect)" "b" #'my/project-build)
-
-(after! drag-stuff
-  (map! :n "M-j" #'drag-stuff-down
-        :n "M-k" #'drag-stuff-up
-        :v "M-j" #'drag-stuff-down
-        :v "M-k" #'drag-stuff-up))
-
-;; Disable the DOOM default S key behavior in Normal mode (snipe)
-(remove-hook 'doom-first-input-hook #'evil-snipe-mode)
-
-;; Hack to fix Dired with Icons
-(after! dired
-  (require 'dired-x))
-
-;; Remove the annyong "Do you REALLY want to quit" message
-(setq confirm-kill-emacs nil)
-
-;; Whenever you reconfigure a package, make sure to wrap your config in an
-;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
-;;
-;;   (after! PACKAGE
-;;     (setq x y))
-;;
-;; The exceptions to this rule:
-;;
-;;   - Setting file/directory variables (like `org-directory')
-;;   - Setting variables which explicitly tell you to set them before their
-;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
-;;   - Setting doom variables (which start with 'doom-' or '+').
-;;
-;; Here are some additional functions/macros that will help you configure Doom.
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
-;; etc).
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
