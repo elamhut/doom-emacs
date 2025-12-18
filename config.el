@@ -125,9 +125,13 @@
   (map! :map evil-normal-state-map
         "M-j" #'drag-stuff-down
         "M-k" #'drag-stuff-up
+        "M-h" #'drag-stuff-left
+        "M-l" #'drag-stuff-right
         :map evil-visual-state-map
         "M-j" #'drag-stuff-down
-        "M-k" #'drag-stuff-up))
+        "M-k" #'drag-stuff-up
+        "M-j" #'drag-stuff-left
+        "M-j" #'drag-stuff-right))
 
 ;; Disable the DOOM default S key behavior in Normal mode (snipe)
 (after! evil-snipe
@@ -167,11 +171,11 @@
       :leader "g P" #'magit-push
       :leader :desc "Magit Merge Plain" "g m m" #'magit-merge-plain
       :leader :desc "Magit Merge with Comment" "g m c" #'magit-merge-editmsg
-      :leader :desc "Magit Merge Previw" "g m p" #'magit-merge-preview
+      :leader :desc "Magit Merge Preview" "g m p" #'magit-merge-preview
       :leader :desc "Magit Merge Abort" "g m a" #'magit-merge-abort
-      :leader :desc "Magit add untracked" "g a" #'magit-stage-untracked
-      :leader :desc "Magit stage this file" "g s" #'magit-file-stage
-      :leader :desc "Magit stage all modified" "g S" #'magit-stage-modified
+      :leader :desc "Magit Add Untracked" "g a" #'magit-stage-untracked
+      :leader :desc "Magit Stage this File" "g s" #'magit-file-stage
+      :leader :desc "Magit Stage all Modified" "g S" #'magit-stage-modified
 
       ;; Custom Keymaps
       :leader :desc "project build (auto-detect)" "b" #'my/project-build)
