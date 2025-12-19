@@ -215,7 +215,8 @@
 
       :i "C-v" #'yank
 
-      :n "C-b s" #'bookmark-set
+      :n "C-b a" #'bookmark-set
+      :n "C-b s" #'bookmark-save
       :n "C-b d" #'bookmark-delete
       :n "C-b r" #'bookmark-rename
       :n "C-b l" #'bookmark-bmenu-list
