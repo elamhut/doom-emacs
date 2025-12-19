@@ -190,6 +190,12 @@
   (evil-open-above 1)
   (evil-normal-state))
 
+;; Magit Stage all Modified and Commit with message
+(defun my-magit-stage-all-and-commit (message)
+  (interactive "sCommit message: ")
+  (magit-stage-modified)
+  (magit-commit-create `("-m" ,message)))
+
 ;; Disable the DOOM default S key behavior in Normal mode (snipe)
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 (after! evil-snipe
@@ -252,6 +258,7 @@
       ;; Magit Keymaps
       :leader "g p" #'magit-pull
       :leader "g P" #'magit-push
+      :leader :desc "Magit Stage All and Commit" "g SPC" #'my-magit-stage-all-and-commit
       :leader :desc "Magit Merge Plain" "g m m" #'magit-merge-plain
       :leader :desc "Magit Merge with Comment" "g m c" #'magit-merge-editmsg
       :leader :desc "Magit Merge Preview" "g m p" #'magit-merge-preview
