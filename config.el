@@ -177,6 +177,19 @@
          (default-directory project))
     (projectile-find-file)))
 
+;; Add Lines without entering Insert Mode
+(defun my/evil-open-below-no-insert ()
+  "Add a line below without entering insert mode."
+  (interactive)
+  (evil-open-below 1)
+  (evil-normal-state))
+
+(defun my/evil-open-above-no-insert ()
+  "Add a line above without entering insert mode."
+  (interactive)
+  (evil-open-above 1)
+  (evil-normal-state))
+
 ;; Disable the DOOM default S key behavior in Normal mode (snipe)
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 (after! evil-snipe
@@ -198,6 +211,11 @@
       :n "M-k" #'evil-scroll-line-up
       :v "M-j" #'evil-scroll-line-down
       :v "M-k" #'evil-scroll-line-up
+
+      :n "M-n" #'my/evil-open-below-no-insert
+      :n "M-p" #'my/evil-open-above-no-insert
+      :v "M-n" #'my/evil-open-below-no-insert
+      :v "M-p" #'my/evil-open-above-no-insert
 
       :n "C-e" #'move-end-of-line
       :n "C-y" #'yank
