@@ -131,6 +131,27 @@
       :map vertico-map
       "C-v" #'+vertico/trigger-open-other-window)
 
+;; Narrow to Scope then select all occurrences of word
+(defun my/multiedit-defun ()
+  "Narrow to defun, multiedit symbol at point, then widen on exit."
+  (interactive)
+  (narrow-to-defun)
+
+  ;; Add temporary advice to widen after multiedit exits
+  (advice-add
+   'evil-multiedit-abort :after
+   (defun my/multiedit--widen (&rest _)
+     (when (buffer-narrowed-p)
+       (widen))
+     ;; Remove advice after running once
+     (advice-remove 'evil-multiedit-abort #'my/multiedit--widen)))
+
+  ;; Start multiedit
+  (evil-multiedit-match-all))
+
+(map! :leader
+      :desc "Multiedit symbol in defun"
+      "r" #'my/multiedit-defun)
 
 ;; Grep functions and names in another Project
 (defun doom/grep-in-other-project ()
@@ -168,15 +189,15 @@
       :v "j"   #'evil-next-visual-line
       :v "k"   #'evil-previous-visual-line
 
-      :n "C-j" #'evil-scroll
+      :n "C-j" #'evil-scroll-down
       :n "C-k" #'evil-scroll-up
       :v "C-j" #'evil-scroll-down
       :v "C-k" #'evil-scroll-up
       
-      :n "M-n" #'evil-scroll-line-down
-      :n "M-p" #'evil-scroll-line-up
-      :v "M-n" #'evil-scroll-line-down
-      :v "M-p" #'evil-scroll-line-up
+      :n "M-j" #'evil-scroll-line-down
+      :n "M-k" #'evil-scroll-line-up
+      :v "M-j" #'evil-scroll-line-down
+      :v "M-k" #'evil-scroll-line-up
 
       :n "C-e" #'move-end-of-line
       :n "C-y" #'yank
