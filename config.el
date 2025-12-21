@@ -258,7 +258,6 @@
       ;; Projectile keymaps
       :leader :desc "Configure Project" "p *" #'projectile-configure-project
       :leader :desc "Grep in other project" "p g" #'doom/grep-in-other-project
-      :leader :desc "Grep in other project" "p g" #'doom/grep-in-other-project
       :leader :desc "Find file in other project" "p SPC" #'doom/projectile-find-file-in-other-project
       :leader :desc "Find file in other project" "p F" #'doom/projectile-find-file-in-other-project
 
@@ -270,7 +269,7 @@
       :leader :desc "Magit Merge with Comment" "g m c" #'magit-merge-editmsg
       :leader :desc "Magit Merge Preview" "g m p" #'magit-merge-preview
       :leader :desc "Magit Merge Abort" "g m a" #'magit-merge-abort
-      :leader :desc "Magit Add Untracked" "g a" #'magit-stage-untracked
+      :leader :desc "Magit Add Untracked" "g a" #'magit-stage
       :leader :desc "Magit Stage this File" "g s" #'magit-file-stage
       :leader :desc "Magit Stage all Modified" "g S" #'magit-stage-modified
 
