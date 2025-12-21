@@ -37,6 +37,12 @@
 ;; Remove the annyong "Do you REALLY want to quit" message
 (setq confirm-kill-emacs nil)
 
+;; Set Find Sibling to change from .h to .c
+(after! files
+  (setq find-sibling-rules
+        '(("\\(.*\\)\\.c\\'" "\\1.h")
+          ("\\(.*\\)\\.h\\'" "\\1.c"))))
+
 ;; Tree-Sitter Config
 (add-hook 'c-ts-mode-hook
           (lambda ()
@@ -247,6 +253,7 @@
 
       ;;;Leader Keymaps;;;
       :leader :desc "Jump to Written Text" "SPC" #'avy-goto-char-timer
+      :leader :desc "Find Files in Project" "f p" #'projectile-find-file
 
       ;; Projectile keymaps
       :leader :desc "Configure Project" "p *" #'projectile-configure-project
