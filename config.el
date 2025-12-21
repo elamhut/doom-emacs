@@ -208,6 +208,11 @@
   (evil-snipe-mode -1)
   (evil-snipe-override-mode -1))
 
+;; Center buffer after Searching
+(after! evil
+  (setq evil-search-wrap t)
+  (add-hook 'evil-jumps-post-jump-hook #'recenter))
+
 ;; Keybinds
 (map! :n "j"   #'evil-next-visual-line
       :n "k"   #'evil-previous-visual-line
