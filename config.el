@@ -213,6 +213,13 @@
   (setq evil-search-wrap t)
   (add-hook 'evil-jumps-post-jump-hook #'recenter))
 
+;; Keeps Visual Selection after evil-indent '='
+(after! evil
+  (map! :v "="
+	(cmd!
+	 (evil-indent (region-beginning) (region-end))
+	 (evil-visual-restore))))
+
 ;; Keybinds
 (map! :n "j"   #'evil-next-visual-line
       :n "k"   #'evil-previous-visual-line
