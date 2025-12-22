@@ -1,0 +1,23 @@
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("Entity Functions"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "\nstatic void\nset")
+ (rear-context-string . "LEVEL_FATAL);\n}\n")
+ (position . 6862)
+ (last-modified 26953 20917 452634 0))
+("Entity Struct"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "	// Timer\n	float")
+ (rear-context-string . ";\n	int wallet;\n\n")
+ (position . 1393)
+ (last-modified 26953 20887 476999 0))
+("Nanquim Jolt Functions"
+ (filename . "d:/GitProjects/Nanquim/src/nanquim/nanquim_jolt.h")
+ (front-context-string . "////////////////")
+ (rear-context-string . "imJolt* jolt);\n\n")
+ (position . 8680)
+ (last-modified 26953 20860 759191 0))
+)

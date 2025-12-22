@@ -76,6 +76,7 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+(setq bookmark-default-file (expand-file-name "bookmarks.txt" doom-user-dir))
 
 ;; Set Compilation Buffer to open with a specific size in lines
 (set-popup-rule! "^\\*compilation\\*"
@@ -88,7 +89,7 @@
 
 ;; Detect build.bat in room and auto-build
 (after! projectile
-  (defun my/project-build ()
+  (defun edu/project-build ()
     "Run build.bat if it exists in the project root, otherwise repeat last Projectile command with prompt."
     (interactive)
     (if-let* ((root (projectile-project-root))
@@ -214,15 +215,14 @@
   (add-hook 'evil-jumps-post-jump-hook #'recenter))
 
 ;; Keeps Visual Selection after evil-indent '='
-(defun edu/keep-visual-after-indent()
+(defun keep-visual-after-indent()
   (interactive)
   (setq x (region-beginning))
   (setq y (region-end))
   (evil-indent x y)
   (evil-visual-make-region x (- y 1)))
 
-(after! evil
-  (map! :v "=" #'edu/keep-visual-after-indent)))
+(map! :v "=" #'keep-visual-after-indent)
 
 
 ;;;;NOTE: MY FUNCTON TO TEST STUFF!!;;;;
@@ -303,5 +303,5 @@
       :leader :desc "Magit Stage this File" "g s" #'magit-file-stage
       :leader :desc "Magit Stage all Modified" "g S" #'magit-stage-modified
 
-      ;; Custom Keymaps
-      :leader :desc "project build (auto-detect)" "b" #'my/project-build)
+      ;; My Custom Function Keymaps
+      :leader :desc "project build (auto-detect)" "b" #'edu/project-build)
