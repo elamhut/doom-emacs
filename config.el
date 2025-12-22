@@ -214,13 +214,31 @@
   (add-hook 'evil-jumps-post-jump-hook #'recenter))
 
 ;; Keeps Visual Selection after evil-indent '='
-(after! evil
-  (map! :v "="
-	(cmd!
-	 (evil-indent (region-beginning) (region-end))
-	 (evil-visual-restore))))
+(defun edu/keep-visual-after-indent()
+  (interactive)
+  (setq x (region-beginning))
+  (setq y (region-end))
+  (evil-indent x y)
+  (evil-visual-make-region x (- y 1)))
 
-;; Keybinds
+(after! evil
+  (map! :v "=" #'edu/keep-visual-after-indent)))
+
+
+;;;;NOTE: MY FUNCTON TO TEST STUFF!!;;;;
+(defun my-test-butten()
+  (interactive)
+  (setq x (region-beginning))
+  (setq y (region-end))
+  (evil-indent x y)
+  (evil-visual-make-region x (- y 1))
+  )
+
+(map! :v "<f14>" #'my-test-butten)
+;;;;NOTE: MY STUFF END!!;;;;
+
+
+;; Keymaps
 (map! :n "j"   #'evil-next-visual-line
       :n "k"   #'evil-previous-visual-line
       :v "j"   #'evil-next-visual-line
