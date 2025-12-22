@@ -2,7 +2,13 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Entity Functions"
+(("Entity Initialization"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "// ENTITY INITIA")
+ (rear-context-string . "///////////////\n")
+ (position . 31179)
+ (last-modified 26953 22174 965868 0))
+("Entity Functions"
  (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
  (front-context-string . "\nstatic void\nset")
  (rear-context-string . "LEVEL_FATAL);\n}\n")

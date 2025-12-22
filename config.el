@@ -76,6 +76,8 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+
+;; Set Bookmark Directory so I can back it up
 (setq bookmark-default-file (expand-file-name "bookmarks.txt" doom-user-dir))
 
 ;; Set Compilation Buffer to open with a specific size in lines
@@ -217,8 +219,8 @@
 ;; Keeps Visual Selection after evil-indent '='
 (defun keep-visual-after-indent()
   (interactive)
-  (setq x (region-beginning))
-  (setq y (region-end))
+  (setq x evil-visual-beginning)
+  (setq y evil-visual-end)
   (evil-indent x y)
   (evil-visual-make-region x (- y 1)))
 
