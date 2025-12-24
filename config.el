@@ -205,6 +205,13 @@
   (magit-stage-modified)
   (magit-commit-create `("-m" ,message)))
 
+;; Magit close buffers with ESC
+(after! magit
+  (map! :map magit-status-mode-map :n [escape] #'+magit/quit)
+  (map! :map magit-diff-mode-map   :n [escape] #'+magit/quit)
+  (map! :map magit-log-mode-map    :n [escape] #'+magit/quit)
+  )
+
 ;; Disable the DOOM default S key behavior in Normal mode (snipe)
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 (after! evil-snipe

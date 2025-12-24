@@ -2,7 +2,79 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Entity Initialization"
+(("Collision Matrix"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "				/* Layer a *")
+ (rear-context-string . "0}; \n\n										")
+ (position . 27008)
+ (last-modified 26956 13797 123092 0))
+("Camera Tick"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "// CAMERA TICK\n/")
+ (rear-context-string . "///////////////\n")
+ (position . 38148)
+ (last-modified 26954 38760 996017 0))
+("Input Check"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "// INPUT CHECK\n/")
+ (rear-context-string . "///////////////\n")
+ (position . 36942)
+ (last-modified 26954 38753 384529 0))
+("Entities Draw"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "DRAW\n	for (uint3")
+ (rear-context-string . ";\n\n	// ENTITIES ")
+ (position . 63026)
+ (last-modified 26953 45955 830556 0))
+("Entity Struct"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "\n	// Stats & Com")
+ (rear-context-string . "hance_to_occur;\n")
+ (position . 2006)
+ (last-modified 26953 45616 731462 0))
+("AppState Struct"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "AppState {\n	stru")
+ (rear-context-string . "ody;\n};\n\nstruct ")
+ (position . 8435)
+ (last-modified 26953 45363 839293 0))
+("Entity Config Enum"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "EntityConfig {\n	")
+ (rear-context-string . " * MB,\n};\n\nenum ")
+ (position . 66)
+ (last-modified 26953 39809 773745 0))
+("Collisions Check"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "COLLISIONS CHECK")
+ (rear-context-string . "lt, dt_s);\n\n	// ")
+ (position . 54512)
+ (last-modified 26953 39456 278553 0))
+("Body Descriptors"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "static const str")
+ (rear-context-string . ", 0.f}},\n	},\n};\n")
+ (position . 3719)
+ (last-modified 26953 36722 681140 0))
+("Entity Configs"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "static const str")
+ (rear-context-string . "LF_HEIGHT 1.0f\n\n")
+ (position . 3183)
+ (last-modified 26953 36715 153964 0))
+("Entity Tick"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "// ENTITY TICK\n/")
+ (rear-context-string . "///////////////\n")
+ (position . 42491)
+ (last-modified 26954 38774 959403 0))
+("Entity Property Struct"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "\n	// Gameplay Pr")
+ (rear-context-string . "perty_Collides,\n")
+ (position . 584)
+ (last-modified 26953 34075 181734 0))
+("Entity Initialization"
  (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
  (front-context-string . "// ENTITY INITIA")
  (rear-context-string . "///////////////\n")
@@ -13,13 +85,7 @@
  (front-context-string . "\nstatic void\nset")
  (rear-context-string . "LEVEL_FATAL);\n}\n")
  (position . 6862)
- (last-modified 26953 20917 452634 0))
-("Entity Struct"
- (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
- (front-context-string . "	// Timer\n	float")
- (rear-context-string . ";\n	int wallet;\n\n")
- (position . 1393)
- (last-modified 26953 20887 476999 0))
+ (last-modified 26953 32744 689331 0))
 ("Nanquim Jolt Functions"
  (filename . "d:/GitProjects/Nanquim/src/nanquim/nanquim_jolt.h")
  (front-context-string . "////////////////")
