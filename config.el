@@ -321,6 +321,7 @@
       ;;;Leader Keymaps;;;
       :leader :desc "Jump to Written Text" "SPC" #'avy-goto-char-timer
       :leader :desc "Find Files in Project" "f p" #'projectile-find-file
+      :leader "r" #'query-replace
 
       ;; Projectile keymaps
       :leader :desc "Configure Project" "p *" #'projectile-configure-project
