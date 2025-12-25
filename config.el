@@ -347,7 +347,7 @@
 (after! replace
   (define-key query-replace-map (kbd "<escape>") 'exit)
   (define-key query-replace-map (kbd "<return>") 'act)
-  (define-key query-replace-map (kbd "RET") 'act))
+  (define-key query-replace-map (kbd "RET") 'act)
   (define-key query-replace-map (kbd "SPC") 'skip)
   (define-key query-replace-map (kbd "<backspace>") 'undo)
   (define-key query-replace-map (kbd "<delete>") 'undo-all))
