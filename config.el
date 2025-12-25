@@ -103,6 +103,65 @@
       ;; Fallback
       (projectile-repeat-last-command 'show-prompt))))
 
+;; Detect .sln and open Devenv
+(after! projectile
+  (defun edu/debug-in-visualstudio ()
+    "Open .sln in Visual Studio"
+    (interactive)
+    (if-let* ((root (projectile-project-root))
+              ;; Get a list of files in 'root' matching the regex "\.sln$"
+              ;; format: (directory-files directory full-name match-regexp)
+              (solutions (directory-files root nil "\\.sln\\'"))
+              (solution (car solutions)) ;; Take the first one found
+              (path (expand-file-name solution root)))
+        (let ((default-directory root))
+          (message "Opening %s..." solution)
+          ;; Use start-process so Emacs doesn't freeze waiting for VS to close
+          (start-process "visual-studio" nil "devenv" path))
+      (user-error "No .sln found in project root"))))
+
+(map! :leader :desc "Open this project's .sln in Visual Studio" "p v" #'edu/debug-in-visualstudio)
+
+
+
+(after! projectile
+  ;; 1. Define a variable to hold the process object
+  (defvar edu/vs-process nil
+    "Holds the running Visual Studio process object.")
+
+  (defun edu/debug-and-run-in-visualstudio ()
+    "Start VS with Debug.Start if not running. If running, alert the user."
+    (interactive)
+    ;; 2. Check if the cached process is still alive
+    (if (process-live-p edu/vs-process)
+        (message "Visual Studio is already running (PID: %d). Switch to that window to debug." 
+                 (process-id edu/vs-process))
+      
+      ;; 3. If dead or nil, find the .sln and launch
+      (if-let* ((root (projectile-project-root))
+                (solutions (directory-files root nil "\\.sln\\'"))
+                (solution (car solutions))
+                (path (expand-file-name solution root)))
+          (let ((default-directory root))
+            (message "Launching Visual Studio for %s..." solution)
+            ;; 4. Start the process and CACHE the returned object into our variable
+            (setq edu/vs-process
+                  (start-process "visual-studio" nil 
+                                 "devenv" 
+                                 path 
+                                 "/Command" 
+                                 "Debug.Start")))
+        (user-error "No .sln found in project root")))))
+
+;; 5. Bind to Space -> p -> V
+(map! :leader
+      (:prefix "p"
+       :desc "Open & Run VS Debugger" "V" #'edu/debug-and-run-in-visualstudio))
+
+
+
+
+
 ;; Ctrl V will open Search Result in Other Window
 ;; 1. The Action: logic to parse the string and open the file
 (defun +vertico/open-candidate-other-window (candidate)
@@ -137,30 +196,7 @@
 
 ;; 3. The Bind: clear and explicit
 (map! :after vertico
-      :map vertico-map
-      "C-v" #'+vertico/trigger-open-other-window)
-
-;; Narrow to Scope then select all occurrences of word
-(defun my/multiedit-defun ()
-  "Narrow to defun, multiedit symbol at point, then widen on exit."
-  (interactive)
-  (narrow-to-defun)
-
-  ;; Add temporary advice to widen after multiedit exits
-  (advice-add
-   'evil-multiedit-abort :after
-   (defun my/multiedit--widen (&rest _)
-     (when (buffer-narrowed-p)
-       (widen))
-     ;; Remove advice after running once
-     (advice-remove 'evil-multiedit-abort #'my/multiedit--widen)))
-
-  ;; Start multiedit
-  (evil-multiedit-match-all))
-
-(map! :leader
-      :desc "Multiedit symbol in defun"
-      "r" #'my/multiedit-defun)
+      :map vertico-map "C-v" #'+vertico/trigger-open-other-window)
 
 ;; Grep functions and names in another Project
 (defun doom/grep-in-other-project ()
