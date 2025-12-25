@@ -103,64 +103,56 @@
       ;; Fallback
       (projectile-repeat-last-command 'show-prompt))))
 
-;; Detect .sln and open Devenv
+;; Open and Run or just Run the project's .sln in Visual Studio
 (after! projectile
-  (defun edu/debug-in-visualstudio ()
-    "Open .sln in Visual Studio"
+  (defvar edu/vs-process nil "Holds the running Visual Studio process object.")
+
+  (defun edu/debug-and-runin-visualstudio ()
+    "If VS is open (cached), tell it to Debug.Start via PowerShell.
+     If VS is closed, launch it and run Debug.Start."
     (interactive)
     (if-let* ((root (projectile-project-root))
-              ;; Get a list of files in 'root' matching the regex "\.sln$"
-              ;; format: (directory-files directory full-name match-regexp)
               (solutions (directory-files root nil "\\.sln\\'"))
-              (solution (car solutions)) ;; Take the first one found
-              (path (expand-file-name solution root)))
-        (let ((default-directory root))
-          (message "Opening %s..." solution)
-          ;; Use start-process so Emacs doesn't freeze waiting for VS to close
-          (start-process "visual-studio" nil "devenv" path))
-      (user-error "No .sln found in project root"))))
+              (solution (car solutions))
+              (path (expand-file-name solution root))
+              ;; Visual Studio expects backslashes for path comparison
+              (win-path (replace-regexp-in-string "/" "\\\\" path)))
+        
+        ;; BRANCH A: Process is already running
+        (if (process-live-p edu/vs-process)
+            (progn
+              (message "Visual Studio is open. Sending 'Debug.Start' signal...")
+              ;; We call PowerShell to find the DTE object for this solution and press F5
+              (call-process "powershell" nil nil nil
+                            "-NoProfile" "-Command"
+                            (concat
+                             "$target = '" win-path "';"
+                             "try {"
+                             ;; Grab the active VS instance
+                             "  $dte = [System.Runtime.InteropServices.Marshal]::GetActiveObject('VisualStudio.DTE');"
+                             ;; Check if it holds our specific solution
+                             "  if ($dte.Solution.FullName -eq $target) {"
+                             "    $dte.MainWindow.Activate();"
+                             "    $dte.ExecuteCommand('Debug.Start');"
+                             "  } else {"
+                             "    Write-Host 'Open VS instance is looking at a different solution.';"
+                             "  }"
+                             "}"
+                             "catch { Write-Host 'Could not connect to VS COM interface.'; }")))
 
-(map! :leader :desc "Open this project's .sln in Visual Studio" "p v" #'edu/debug-in-visualstudio)
-
-
-
-(after! projectile
-  ;; 1. Define a variable to hold the process object
-  (defvar edu/vs-process nil
-    "Holds the running Visual Studio process object.")
-
-  (defun edu/debug-and-run-in-visualstudio ()
-    "Start VS with Debug.Start if not running. If running, alert the user."
-    (interactive)
-    ;; 2. Check if the cached process is still alive
-    (if (process-live-p edu/vs-process)
-        (message "Visual Studio is already running (PID: %d). Switch to that window to debug." 
-                 (process-id edu/vs-process))
-      
-      ;; 3. If dead or nil, find the .sln and launch
-      (if-let* ((root (projectile-project-root))
-                (solutions (directory-files root nil "\\.sln\\'"))
-                (solution (car solutions))
-                (path (expand-file-name solution root)))
+          ;; BRANCH B: Process is dead or nil -> Launch new
           (let ((default-directory root))
             (message "Launching Visual Studio for %s..." solution)
-            ;; 4. Start the process and CACHE the returned object into our variable
             (setq edu/vs-process
                   (start-process "visual-studio" nil 
                                  "devenv" 
                                  path 
                                  "/Command" 
-                                 "Debug.Start")))
-        (user-error "No .sln found in project root")))))
+                                 "Debug.Start"))))
+      
+      (user-error "No .sln found in project root")))
 
-;; 5. Bind to Space -> p -> V
-(map! :leader
-      (:prefix "p"
-       :desc "Open & Run VS Debugger" "V" #'edu/debug-and-run-in-visualstudio))
-
-
-
-
+  (map! :leader (:prefix "p" :desc "Visual Studio Debug" "v" #'edu/debug-and-runin-visualstudio)))
 
 ;; Ctrl V will open Search Result in Other Window
 ;; 1. The Action: logic to parse the string and open the file
