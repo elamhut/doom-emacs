@@ -261,7 +261,6 @@
 
 (map! :v "=" #'keep-visual-after-indent)
 
-
 ;;;;NOTE: MY FUNCTON TO TEST STUFF!!;;;;
 (defun my-test-butten()
   (interactive)
@@ -321,7 +320,7 @@
       ;;;Leader Keymaps;;;
       :leader :desc "Jump to Written Text" "SPC" #'avy-goto-char-timer
       :leader :desc "Find Files in Project" "f p" #'projectile-find-file
-      :leader "r" #'query-replace
+      :leader "r" #'anzu-query-replace
 
       ;; Projectile keymaps
       :leader :desc "Configure Project" "p *" #'projectile-configure-project
@@ -343,3 +342,12 @@
 
       ;; My Custom Function Keymaps
       :leader :desc "project build (auto-detect)" "b" #'edu/project-build)
+
+;; Special Maps
+(after! replace
+  (define-key query-replace-map (kbd "<escape>") 'exit)
+  (define-key query-replace-map (kbd "<return>") 'act)
+  (define-key query-replace-map (kbd "RET") 'act))
+  (define-key query-replace-map (kbd "SPC") 'skip)
+  (define-key query-replace-map (kbd "<backspace>") 'undo)
+  (define-key query-replace-map (kbd "<delete>") 'undo-all))
