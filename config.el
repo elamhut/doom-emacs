@@ -66,6 +66,33 @@
 (after! dired
   (require 'dired-x))
 
+(defun edu/jump-to-next-brace ()
+  "Jump forward to the next { or }."
+  (interactive)
+  ;; If we are already standing on a brace, step forward one character
+  ;; so we don't just 'find' the one we are currently on.
+  (when (looking-at "[{}]")
+    (forward-char 1))
+  
+  ;; Search forward. If found, step back 1 so cursor is ON the char.
+  (if (re-search-forward "[{}]" nil t)
+      (backward-char 1)
+    (message "No next brace found")))
+
+(defun edu/jump-to-prev-brace ()
+  "Jump backward to the previous { or }."
+  (interactive)
+  ;; re-search-backward automatically searches text *before* the cursor,
+  ;; so we don't usually need to manually adjust point before searching.
+  (unless (re-search-backward "[{}]" nil t)
+    (message "No previous brace found")))
+
+;; Bindings
+(map! :n "("     #'edu/jump-to-next-brace
+      :n ")" #'edu/jump-to-prev-brace)
+
+
+
 ;; Tree-Sitter Config
 (add-hook 'c-ts-mode-hook
           (lambda ()
