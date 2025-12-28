@@ -2,7 +2,25 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Collision Matrix"
+(("Math"
+ (filename . "d:/GitProjects/Nanquim/foundation/src/foundation/math.h")
+ (front-context-string . "\nstatic inline N")
+ (rear-context-string . "eturn result;\n}\n")
+ (position . 10183)
+ (last-modified 26958 56523 702154 0))
+("Input Check"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "INPUT CHECK\n////")
+ (rear-context-string . "////////////\n// ")
+ (position . 29366)
+ (last-modified 26957 55257 9835 0))
+("Property Flags"
+ (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
+ (front-context-string . "ags {\n	// Flags ")
+ (rear-context-string . "\nenum PropertyFl")
+ (position . 3368)
+ (last-modified 26957 39708 214301 0))
+("Collision Matrix"
  (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
  (front-context-string . "				/* Layer a *")
  (rear-context-string . "0}; \n\n										")
@@ -14,12 +32,6 @@
  (rear-context-string . "///////////////\n")
  (position . 38148)
  (last-modified 26954 38760 996017 0))
-("Input Check"
- (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
- (front-context-string . "// INPUT CHECK\n/")
- (rear-context-string . "///////////////\n")
- (position . 36942)
- (last-modified 26954 38753 384529 0))
 ("Entities Draw"
  (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
  (front-context-string . "DRAW\n	for (uint3")

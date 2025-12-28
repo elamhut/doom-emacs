@@ -37,11 +37,34 @@
 ;; Remove the annyong "Do you REALLY want to quit" message
 (setq confirm-kill-emacs nil)
 
-;; Set Find Sibling to change from .h to .c
+;; Set Dired in Hide Details Mode by default
+(after! dirvish
+  (setq dirvish-hide-details t))
+
+;; Set Find Sibling to change from .h to .c (SPC p o)
 (after! files
   (setq find-sibling-rules
         '(("\\(.*\\)\\.c\\'" "\\1.h")
           ("\\(.*\\)\\.h\\'" "\\1.c"))))
+
+;; Set Bookmark Directory so I can back it up
+(setq bookmark-default-file (expand-file-name "bookmarks.txt" doom-user-dir))
+
+;; Recenter After Bookmark Jump
+(add-hook 'bookmark-after-jump-hook #'recenter)
+
+;; Recenter After Consult Jump
+(add-hook 'consult-after-jump-hook #'recenter)
+
+
+;; Set Compilation Buffer to open with a specific size in lines
+(set-popup-rule! "^\\*compilation\\*"
+  :side 'bottom
+  :size 10)
+
+;; Hack to fix Dired with Icons
+(after! dired
+  (require 'dired-x))
 
 ;; Tree-Sitter Config
 (add-hook 'c-ts-mode-hook
@@ -50,7 +73,6 @@
 
 ;; This controls how much Tree Sitter Syntex Highlight color you want
 (setq treesit-font-lock-level 3)
-
 
 ;; Configuring TreeSitter for Syntax Highlighting of Numbers
 (add-hook 'c-ts-mode-hook
@@ -77,17 +99,6 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
-;; Set Bookmark Directory so I can back it up
-(setq bookmark-default-file (expand-file-name "bookmarks.txt" doom-user-dir))
-
-;; Set Compilation Buffer to open with a specific size in lines
-(set-popup-rule! "^\\*compilation\\*"
-  :side 'bottom
-  :size 10)
-
-;; Hack to fix Dired with Icons
-(after! dired
-  (require 'dired-x))
 
 ;; Detect build.bat in room and auto-build
 (after! projectile
@@ -155,40 +166,45 @@
   (map! :leader (:prefix "p" :desc "Visual Studio Debug" "v" #'edu/debug-and-runin-visualstudio)))
 
 ;; Ctrl V will open Search Result in Other Window
-;; 1. The Action: logic to parse the string and open the file
 (defun +vertico/open-candidate-other-window (candidate)
-  "Parses 'file:line:content' and opens it in another window."
+  "Opens the candidate in another window, supporting Consult metadata."
   (interactive "sCandidate: ")
-  (let* ((clean-cand (substring-no-properties candidate))
-         (file clean-cand)
-         (line nil))
-    
-    ;; A. Parse "File:Line:" pattern
-    (when (string-match "^\\([^:]+\\):\\([0-9]+\\):" clean-cand)
-      (setq file (match-string 1 clean-cand))
-      (setq line (string-to-number (match-string 2 clean-cand))))
+  ;; 1. Try to get the real location from Consult properties (if available)
+  (let ((cons (get-text-property 0 'consult-location candidate)))
+    (if cons
+        ;; If it's a consult candidate (grep/ripgrep/line), use its internal jump logic
+        (let ((current-prefix-arg t)) ;; Emulate C-u to force other-window logic if supported
+           ;; We manually split and jump because consult-jump usually reuses window
+           (consult--jump cons))
+      
+      ;; 2. Fallback to your Regex logic for simple file paths
+      (let* ((clean-cand (substring-no-properties candidate))
+             (file clean-cand)
+             (line nil))
+        (when (string-match "^\\([^:]+\\):\\([0-9]+\\):" clean-cand)
+          (setq file (match-string 1 clean-cand))
+          (setq line (string-to-number (match-string 2 clean-cand))))
+        
+        (find-file-other-window (expand-file-name file))
+        (when line
+          (goto-char (point-min))
+          (forward-line (1- line))
+          (recenter)
+          (pulse-momentary-highlight-one-line (point)))))))
 
-    ;; B. Open the file (relative to current search context)
-    ;; We use expand-file-name to ensure we don't lose the path
-    (find-file-other-window (expand-file-name file))
-
-    ;; C. Jump to line
-    (when line
-      (goto-char (point-min))
-      (forward-line (1- line))
-      (recenter)
-      (pulse-momentary-highlight-one-line (point)))))
-
-;; 2. The Trigger: A specific command to bind to C-v
+;; 2. The Trigger: Ensure Embark is ready before binding the variable
 (defun +vertico/trigger-open-other-window ()
   "Trigger embark to act on the current candidate with our custom function."
   (interactive)
+  ;; FIX: Ensure embark is loaded so 'embark-prompter' is recognized as a dynamic variable
+  (require 'embark)
   (let ((embark-prompter (lambda (&rest _) #'+vertico/open-candidate-other-window)))
     (embark-act)))
 
 ;; 3. The Bind: clear and explicit
 (map! :after vertico
       :map vertico-map "C-v" #'+vertico/trigger-open-other-window)
+
 
 ;; Grep functions and names in another Project
 (defun doom/grep-in-other-project ()
@@ -233,12 +249,16 @@
   (magit-stage-modified)
   (magit-commit-create `("-m" ,message)))
 
-;; Magit close buffers with ESC
+;; Git and Magit close buffers with ESC
 (after! magit
-  (map! :map magit-status-mode-map :n [escape] #'+magit/quit)
-  (map! :map magit-diff-mode-map   :n [escape] #'+magit/quit)
-  (map! :map magit-log-mode-map    :n [escape] #'+magit/quit)
+  (map! :map magit-status-mode-map    :n [escape] #'+magit/quit)
+  (map! :map magit-diff-mode-map      :n [escape] #'+magit/quit)
+  (map! :map magit-log-mode-map       :n [escape] #'+magit/quit)
   )
+
+(after! git-timemachine
+  (evil-define-minor-mode-key 'normal 'git-timemachine-mode
+    [escape] #'git-timemachine-quit))
 
 ;; Disable the DOOM default S key behavior in Normal mode (snipe)
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
@@ -274,7 +294,8 @@
 ;;;;NOTE: MY STUFF END!!;;;;
 
 
-;; Keymaps
+;; Keymaps ;;
+
 (map! :n "j"   #'evil-next-visual-line
       :n "k"   #'evil-previous-visual-line
       :v "j"   #'evil-next-visual-line
