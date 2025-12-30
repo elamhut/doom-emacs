@@ -326,8 +326,8 @@
       :n "k"   #'evil-previous-visual-line
       :v "j"   #'evil-next-visual-line
       :v "k"   #'evil-previous-visual-line
-      ;; :i "C-l" #'forward-char
-      ;; :i "C-h" #'backward-char
+      :i "C-l" #'forward-char
+      :i "C-h" #'backward-char
 
       :n "C-j" #'evil-scroll-down
       :n "C-k" #'evil-scroll-up
