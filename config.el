@@ -39,7 +39,11 @@
 
 ;; Set Dired in Hide Details Mode by default
 (after! dirvish
-  (setq dirvish-hide-details t))
+  (setq-default dirvish-hide-details t))
+
+;; Hack to fix Dired with Icons
+(after! dired
+  (require 'dired-x))
 
 ;; Set Find Sibling to change from .h to .c (SPC p o)
 (after! files
@@ -61,10 +65,6 @@
 (set-popup-rule! "^\\*compilation\\*"
   :side 'bottom
   :size 10)
-
-;; Hack to fix Dired with Icons
-(after! dired
-  (require 'dired-x))
 
 (defun edu/jump-to-next-brace ()
   "Jump forward to the next { or }."
@@ -88,8 +88,8 @@
     (message "No previous brace found")))
 
 ;; Bindings
-(map! :n "("     #'edu/jump-to-next-brace
-      :n ")" #'edu/jump-to-prev-brace)
+(map! :n ")"     #'edu/jump-to-next-brace
+      :n "(" #'edu/jump-to-prev-brace)
 
 
 
@@ -124,7 +124,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "D:/GitProjects/DiscipleOfPermanence")
 
 
 ;; Detect build.bat in room and auto-build
@@ -322,11 +322,12 @@
 
 
 ;; Keymaps ;;
-
 (map! :n "j"   #'evil-next-visual-line
       :n "k"   #'evil-previous-visual-line
       :v "j"   #'evil-next-visual-line
       :v "k"   #'evil-previous-visual-line
+      :i "C-l" #'forward-char
+      :i "C-h" #'backward-char
 
       :n "C-j" #'evil-scroll-down
       :n "C-k" #'evil-scroll-up
@@ -364,11 +365,12 @@
       :n "C-b d" #'bookmark-delete
       :n "C-b r" #'bookmark-rename
       :n "C-b l" #'bookmark-bmenu-list
-
+ 
       ;;;Leader Keymaps;;;
-      :leader :desc "Jump to Written Text" "SPC" #'avy-goto-char-timer
+      :Leader :desc "Jump to Written Text" "SPC" #'avy-goto-char-timer
       :leader :desc "Find Files in Project" "f p" #'projectile-find-file
       :leader "r" #'anzu-query-replace
+      :leader "d" #'dired-jump
 
       ;; Projectile keymaps
       :leader :desc "Configure Project" "p *" #'projectile-configure-project
