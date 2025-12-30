@@ -326,8 +326,8 @@
       :n "k"   #'evil-previous-visual-line
       :v "j"   #'evil-next-visual-line
       :v "k"   #'evil-previous-visual-line
-      :i "C-l" #'forward-char
-      :i "C-h" #'backward-char
+      ;; :i "C-l" #'forward-char
+      ;; :i "C-h" #'backward-char
 
       :n "C-j" #'evil-scroll-down
       :n "C-k" #'evil-scroll-up
@@ -367,7 +367,7 @@
       :n "C-b l" #'bookmark-bmenu-list
  
       ;;;Leader Keymaps;;;
-      :Leader :desc "Jump to Written Text" "SPC" #'avy-goto-char-timer
+      :leader :desc "Jump to Written Text" "SPC" #'avy-goto-char-timer
       :leader :desc "Find Files in Project" "f p" #'projectile-find-file
       :leader "r" #'anzu-query-replace
       :leader "d" #'dired-jump
