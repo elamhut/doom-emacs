@@ -47,4 +47,6 @@
  ;; If there is more than one, they won't work right.
  '(evil-goggles-default-face ((t (:background "orange red"))))
  '(highlight ((t (:background "#957FB8" :foreground "ghost white" :weight bold))))
- '(region ((t nil))))
+ '(hl-line ((t (:extend t :background "#363646"))))
+ '(region ((t (:extend t :background "#223249"))))
+ '(show-paren-match ((t (:background "#1f1f28" :foreground "#ff6c6b" :weight ultra-bold)))))
