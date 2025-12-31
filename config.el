@@ -37,6 +37,9 @@
 ;; Remove the annyong "Do you REALLY want to quit" message
 (setq confirm-kill-emacs nil)
 
+;; Auto update buffer when file changes on disk
+(setq global-auto-revert-mode t)
+
 ;; Set Dired in Hide Details Mode by default
 (after! dirvish
   (setq-default dirvish-hide-details t))
