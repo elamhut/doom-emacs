@@ -232,6 +232,8 @@
 (map! :after vertico
       :map vertico-map "C-v" #'+vertico/trigger-open-other-window)
 
+;; Projectile Recursive Discovery to include Submodules
+(setq projectile-auto-discover t)
 
 ;; Grep functions and names in another Project
 (defun doom/grep-in-other-project ()
@@ -288,10 +290,10 @@
     [escape] #'git-timemachine-quit))
 
 ;; Disable the DOOM default S key behavior in Normal mode (snipe)
-(remove-hook 'doom-first-input-hook #'evil-snipe-mode)
-(after! evil-snipe
-  (evil-snipe-mode -1)
-  (evil-snipe-override-mode -1))
+;; (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
+;; (after! evil-snipe
+;;   (evil-snipe-mode -1)
+;;   (evil-snipe-override-mode -1))
 
 ;; Center buffer after Searching
 (after! evil

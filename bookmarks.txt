@@ -2,7 +2,19 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Stacker Tick"
+(("Brain Tick"
+ (filename . "d:/GitProjects/Nanquim/src/game/brain.c")
+ (front-context-string . " entity_t* entit")
+ (rear-context-string . "pstate_t* state,")
+ (position . 255)
+ (last-modified 26964 23986 156922 0))
+("Game Init"
+ (filename . "d:/GitProjects/Nanquim/src/game/game_init.c")
+ (front-context-string . "game_init(struct")
+ (rear-context-string . "/\n\n\nstatic void\n")
+ (position . 241)
+ (last-modified 26963 52579 552964 0))
+("Stacker Tick"
  (filename . "d:/GitProjects/Nanquim/src/game/stacker.c")
  (front-context-string . "stacker(struct A")
  (rear-context-string . "/\n\n\nstatic void\n")
