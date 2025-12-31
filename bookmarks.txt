@@ -2,7 +2,19 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Brain Tick"
+(("AppState Struct"
+ (filename . "d:/GitProjects/Nanquim/src/game/types.h")
+ (front-context-string . "typedef struct A")
+ (rear-context-string . ";\n\n} entity_t;\n\n")
+ (position . 4028)
+ (last-modified 26965 37178 98907 0))
+("Body Descriptors"
+ (filename . "d:/GitProjects/Nanquim/src/game/entity_configs.h")
+ (front-context-string . "static const str")
+ (rear-context-string . "ody Descriptors\n")
+ (position . 2940)
+ (last-modified 26965 22948 452678 0))
+("Brain Tick"
  (filename . "d:/GitProjects/Nanquim/src/game/brain.c")
  (front-context-string . " entity_t* entit")
  (rear-context-string . "pstate_t* state,")
@@ -158,18 +170,6 @@
  (rear-context-string . "eturn result;\n}\n")
  (position . 10183)
  (last-modified 26958 56523 702154 0))
-("AppState Struct"
- (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
- (front-context-string . "AppState {\n	stru")
- (rear-context-string . "ody;\n};\n\nstruct ")
- (position . 8435)
- (last-modified 26953 45363 839293 0))
-("Body Descriptors"
- (filename . "d:/GitProjects/Nanquim/src/game/tower.c")
- (front-context-string . "static const str")
- (rear-context-string . ", 0.f}},\n	},\n};\n")
- (position . 3719)
- (last-modified 26953 36722 681140 0))
 ("Nanquim Jolt Functions"
  (filename . "d:/GitProjects/Nanquim/src/nanquim/nanquim_jolt.h")
  (front-context-string . "////////////////")

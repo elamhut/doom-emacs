@@ -60,11 +60,37 @@
 ;; Recenter After Consult Jump
 (add-hook 'consult-after-jump-hook #'recenter)
 
-
 ;; Set Compilation Buffer to open with a specific size in lines
 (set-popup-rule! "^\\*compilation\\*"
   :side 'bottom
   :size 10)
+
+;; Center buffer after Searching
+(after! evil
+  (setq evil-search-wrap t)
+  (add-hook 'evil-jumps-post-jump-hook #'recenter))
+
+;; D F <space> should now delete the whitespace
+(defun edu/cleanup-whitespace-after-df-space (&rest _)
+  "Auto-delete extra whitespace after running 'd f <space>'."
+  (when (and (eq evil-this-operator 'evil-delete)      ;; 1. It was a delete op
+             (looking-at "[ \t]"))                     ;; 2. We are staring at a space
+    
+    ;; 3. Check if the motion was 'f' (standard or snipe)
+    (when (memq evil-this-motion '(evil-find-char evil-snipe-f))
+      
+      ;; 4. Verify the user actually typed <space> as the target
+      ;;    (We check the last key press of the command)
+      (let* ((keys (this-command-keys-vector))
+             (last-key (aref keys (1- (length keys)))))
+        
+        (when (= last-key 32) ;; 32 is the ASCII code for SPACE
+          (delete-char 1))))))
+
+;; Apply the advice
+(advice-add 'evil-delete :after #'edu/cleanup-whitespace-after-df-space)
+
+
 
 (defun edu/jump-to-next-brace ()
   "Jump forward to the next { or }."
@@ -125,7 +151,6 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "D:/GitProjects/DiscipleOfPermanence")
-
 
 ;; Detect build.bat in room and auto-build
 (after! projectile
@@ -228,10 +253,6 @@
   (let ((embark-prompter (lambda (&rest _) #'+vertico/open-candidate-other-window)))
     (embark-act)))
 
-;; 3. The Bind: clear and explicit
-(map! :after vertico
-      :map vertico-map "C-v" #'+vertico/trigger-open-other-window)
-
 ;; Projectile Recursive Discovery to include Submodules
 (setq projectile-auto-discover t)
 
@@ -278,12 +299,6 @@
   (magit-stage-modified)
   (magit-commit-create `("-m" ,message)))
 
-;; Git and Magit close buffers with ESC
-(after! magit
-  (map! :map magit-status-mode-map    :n [escape] #'+magit/quit)
-  (map! :map magit-diff-mode-map      :n [escape] #'+magit/quit)
-  (map! :map magit-log-mode-map       :n [escape] #'+magit/quit)
-  )
 
 (after! git-timemachine
   (evil-define-minor-mode-key 'normal 'git-timemachine-mode
@@ -295,10 +310,6 @@
 ;;   (evil-snipe-mode -1)
 ;;   (evil-snipe-override-mode -1))
 
-;; Center buffer after Searching
-(after! evil
-  (setq evil-search-wrap t)
-  (add-hook 'evil-jumps-post-jump-hook #'recenter))
 
 ;; Keeps Visual Selection after evil-indent '='
 (defun keep-visual-after-indent()
@@ -308,7 +319,6 @@
   (evil-indent x y)
   (evil-visual-make-region x (- y 1)))
 
-(map! :v "=" #'keep-visual-after-indent)
 
 ;;;;NOTE: MY FUNCTON TO TEST STUFF!!;;;;
 (defun my-test-butten()
@@ -373,6 +383,8 @@
       :leader :desc "Find Files in Project" "f p" #'projectile-find-file
       :leader "r" #'anzu-query-replace
       :leader "d" #'dired-jump
+      :leader "<" #'evil-switch-to-windows-last-buffer
+      :leader ">" #'consult-buffer
 
       ;; Projectile keymaps
       :leader :desc "Configure Project" "p *" #'projectile-configure-project
@@ -393,9 +405,12 @@
       :leader :desc "Magit Stage all Modified" "g S" #'magit-stage-modified
 
       ;; My Custom Function Keymaps
-      :leader :desc "project build (auto-detect)" "b" #'edu/project-build)
+      :v "=" #'keep-visual-after-indent)
+      :leader :desc "project build (auto-detect)" "b" #'edu/project-build
 
 ;; Special Maps
+ 
+;; This is Replace mode <leader> r
 (after! replace
   (define-key query-replace-map (kbd "<escape>") 'exit)
   (define-key query-replace-map (kbd "<return>") 'act)
@@ -403,3 +418,15 @@
   (define-key query-replace-map (kbd "SPC") 'skip)
   (define-key query-replace-map (kbd "<backspace>") 'undo)
   (define-key query-replace-map (kbd "<delete>") 'undo-all))
+
+;; Vertico Rebinds
+(map! :after vertico
+      :map vertico-map "C-v" #'+vertico/trigger-open-other-window
+      :map vertico-map "M-j" #'next-history-element
+      :map vertico-map "M-k" #'previous-history-element)
+
+;; Git and Magit close buffers with ESC instead of Q
+(after! magit
+  (map! :map magit-status-mode-map    :n [escape] #'+magit/quit)
+  (map! :map magit-diff-mode-map      :n [escape] #'+magit/quit)
+  (map! :map magit-log-mode-map       :n [escape] #'+magit/quit))
