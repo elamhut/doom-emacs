@@ -322,6 +322,7 @@
   (evil-indent x y)
   (evil-visual-make-region x (- y 1)))
 
+(map! :v "=" #'keep-visual-after-indent)
 
 ;;;;NOTE: MY FUNCTON TO TEST STUFF!!;;;;
 (defun my-test-butten()
@@ -329,8 +330,7 @@
   (setq x (region-beginning))
   (setq y (region-end))
   (evil-indent x y)
-  (evil-visual-make-region x (- y 1))
-  )
+  (evil-visual-make-region x (- y 1)))
 
 (map! :v "<f14>" #'my-test-butten)
 ;;;;NOTE: MY STUFF END!!;;;;
@@ -408,8 +408,7 @@
       :leader :desc "Magit Stage all Modified" "g S" #'magit-stage-modified
 
       ;; My Custom Function Keymaps
-      :v "=" #'keep-visual-after-indent)
-      :leader :desc "project build (auto-detect)" "b" #'edu/project-build
+      :leader :desc "project build (auto-detect)" "b" #'edu/project-build)
 
 ;; Special Maps
  

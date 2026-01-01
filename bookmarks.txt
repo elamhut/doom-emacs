@@ -2,7 +2,13 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("AppState Struct"
+(("Blockchain and Ledger"
+ (filename . "d:/GitProjects/Nanquim/src/game/blockchain.c")
+ (front-context-string . "LEDGER BECOMES P")
+ (rear-context-string . "IN IS WHERE THE ")
+ (position . 501)
+ (last-modified 26965 49218 792572 0))
+("AppState Struct"
  (filename . "d:/GitProjects/Nanquim/src/game/types.h")
  (front-context-string . "typedef struct A")
  (rear-context-string . ";\n\n} entity_t;\n\n")
