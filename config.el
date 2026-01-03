@@ -93,7 +93,14 @@
 ;; Apply the advice
 (advice-add 'evil-delete :after #'edu/cleanup-whitespace-after-df-space)
 
+;; When using * to highlight the word, don't move caret to next word!
+;; (defun edu/evil-star-no-jump ()
+;;   "Search for the word under cursor, but stay on the current word."
+;;   (interactive)
+;;   (save-excursion
+;;     (evil-search-word-forward)))
 
+;; (map! :n "*" #'edu/evil-star-no-jump)
 
 (defun edu/jump-to-next-brace ()
   "Jump forward to the next { or }."
@@ -398,6 +405,9 @@
       ;; Magit Keymaps
       :leader "g p" #'magit-pull
       :leader "g P" #'magit-push
+      :leader "g L" #'nil
+      :leader :desc "Log this Buffer" "g L l" #'magit-log-buffer-file
+      :leader :desc "Log All Branches" "g L L" #'magit-log-all
       :leader :desc "Magit Stage All and Commit" "g SPC" #'my-magit-stage-all-and-commit
       :leader :desc "Magit Merge Plain" "g m m" #'magit-merge-plain
       :leader :desc "Magit Merge with Comment" "g m c" #'magit-merge-editmsg
