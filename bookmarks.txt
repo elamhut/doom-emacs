@@ -2,18 +2,36 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Random Functions"
+(("Deal Damage Tick"
+ (filename . "d:/GitProjects/Nanquim/src/game/deals_damage.c")
+ (front-context-string . "// DEALING DAMAG")
+ (rear-context-string . "///////////////\n")
+ (position . 102)
+ (last-modified 26969 37410 325944 0))
+("Entity Properties Struct"
+ (filename . "d:/GitProjects/Nanquim/src/game/types.h")
+ (front-context-string . "\n	// Shoots\n	Pro")
+ (rear-context-string . "andom_Teleport,\n")
+ (position . 1323)
+ (last-modified 26969 29899 283143 0))
+("Helper Functions"
+ (filename . "d:/GitProjects/Nanquim/src/game/helpers.c")
+ (front-context-string . "// HELPER FUNCTI")
+ (rear-context-string . "///////////////\n")
+ (position . 102)
+ (last-modified 26969 19711 582486 0))
+("brian"
+ (filename . "d:/GitProjects/Nanquim/src/game/acquire_targets.c")
+ (front-context-string . "	mem_zero(MEM(en")
+ (rear-context-string . "body_targets));\n")
+ (position . 3595)
+ (last-modified 26969 3150 575859 0))
+("Random Functions"
  (filename . "d:/GitProjects/Nanquim/src/game/random.c")
  (front-context-string . "S\n//////////////")
  (rear-context-string . " RANDOM FUNCTION")
  (position . 120)
  (last-modified 26968 10301 568871 0))
-("create"
- (filename . "d:/GitProjects/Nanquim/src/game/entity.c")
- (front-context-string . " AppState* state")
- (rear-context-string . "_userdata(struct")
- (position . 639)
- (last-modified 26968 6952 687045 0))
 ("Shootable Tick"
  (filename . "d:/GitProjects/Nanquim/src/game/shootable.c")
  (front-context-string . "ABLE TICK\n//////")
@@ -146,12 +164,6 @@
  (rear-context-string . "OPERTY_MAX \n};\n\n")
  (position . 1662)
  (last-modified 26961 37301 173837 0))
-("Entity Properties Struct"
- (filename . "d:/GitProjects/Nanquim/src/game/types.h")
- (front-context-string . "enum EntityPrope")
- (rear-context-string . "ration;\n	};\n};\n\n")
- (position . 453)
- (last-modified 26961 37279 893302 0))
 ("Lifetime Tick"
  (filename . "d:/GitProjects/Nanquim/src/game/lifetime.c")
  (front-context-string . " AppState* state")
@@ -200,10 +212,10 @@
  (rear-context-string . "eturn result;\n}\n")
  (position . 10183)
  (last-modified 26958 56523 702154 0))
-("Nanquim Jolt Functions"
+("Jolt Functions"
  (filename . "d:/GitProjects/Nanquim/src/nanquim/nanquim_jolt.h")
  (front-context-string . "////////////////")
  (rear-context-string . "imJolt* jolt);\n\n")
  (position . 8680)
- (last-modified 26953 20860 759191 0))
+ (last-modified 26969 2423 496459 0))
 )
