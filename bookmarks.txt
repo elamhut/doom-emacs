@@ -20,12 +20,6 @@
  (rear-context-string . "///////////////\n")
  (position . 102)
  (last-modified 26969 19711 582486 0))
-("brian"
- (filename . "d:/GitProjects/Nanquim/src/game/acquire_targets.c")
- (front-context-string . "	mem_zero(MEM(en")
- (rear-context-string . "body_targets));\n")
- (position . 3595)
- (last-modified 26969 3150 575859 0))
 ("Random Functions"
  (filename . "d:/GitProjects/Nanquim/src/game/random.c")
  (front-context-string . "S\n//////////////")

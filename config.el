@@ -6,6 +6,7 @@
 (load! "modules/doom_variables.el")
 (load! "modules/treesitter.el")
 (load! "modules/projectile.el")
+(load! "modules/org_project.el")
 (load! "modules/vertico.el")
 (load! "modules/magit.el")
 (load! "modules/my_customizations.el")
