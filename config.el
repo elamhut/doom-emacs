@@ -11,6 +11,12 @@
 (load! "modules/magit.el")
 (load! "modules/my_customizations.el")
 
+(custom-set-faces!
+  '(org-code :foreground "firebrick2" :background "grey20")
+  '(org-block-begin-line :foreground "#646489" :background "#282835")
+  '(org-block :background "#282835")
+  '(org-block-end-line :foreground "#646489" :background "#282835"))
+
 
 ;;;;NOTE: MY FUNCTON TO TEST STUFF!!;;;;
 (defun my-test-butten()
@@ -76,6 +82,8 @@
       :leader "d" #'dired-jump
       :leader "<" #'evil-switch-to-windows-last-buffer
       :leader ">" #'consult-buffer
+      :leader "n b" #'org-insert-structure-template
+      :leader "n e" #'org-emphasize
 
       ;; Projectile keymaps
       :leader :desc "Configure Project" "p *" #'projectile-configure-project
