@@ -90,6 +90,7 @@
       :leader "g p" #'magit-pull
       :leader "g P" #'magit-push
       :leader "g L" #'nil
+      :leader "g u" #'magit-submodule-update
       :leader :desc "Log this Buffer" "g L l" #'magit-log-buffer-file
       :leader :desc "Log All Branches" "g L L" #'magit-log-all
       :leader :desc "Magit Stage All and Commit" "g SPC" #'my-magit-stage-all-and-commit
