@@ -73,6 +73,14 @@
   :side 'bottom
   :size 10)
 
+;; Set customized colors!
+(custom-set-faces!
+  '(org-code :foreground "firebrick2" :background "grey20")
+  '(org-block-begin-line :foreground "#646489" :background "#282835")
+  '(org-block :background "#282835")
+  '(org-block-end-line :foreground "#646489" :background "#282835"))
+
+
 
 ;; Disable the DOOM default S key behavior in Normal mode (snipe)
 ;; (remove-hook 'doom-first-input-hook #'evil-snipe-mode)

@@ -11,11 +11,6 @@
 (load! "modules/magit.el")
 (load! "modules/my_customizations.el")
 
-(custom-set-faces!
-  '(org-code :foreground "firebrick2" :background "grey20")
-  '(org-block-begin-line :foreground "#646489" :background "#282835")
-  '(org-block :background "#282835")
-  '(org-block-end-line :foreground "#646489" :background "#282835"))
 
 
 ;;;;NOTE: MY FUNCTON TO TEST STUFF!!;;;;
